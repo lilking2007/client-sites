@@ -906,51 +906,101 @@
 </main>
 
 <script>
-  function handleSubmit() {
-    // Collect all answers for copy-paste
-    const fields = document.querySelectorAll('input[type="text"], input[type="url"], input[type="date"], textarea, select');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const radios = document.querySelectorAll('input[type="radio"]:checked');
+  // ── CONFIG: paste your Formspree form ID here (from formspree.io) ──
+  const FORMSPREE_ID = 'mnjwekav';
 
-    let filled = 0;
-    fields.forEach(f => { if (f.value.trim()) filled++; });
-
-    const total = fields.length;
-    const pct = Math.round((filled / total) * 100);
-
-    if (pct < 30) {
-      alert(`⚠️ The form is only ${pct}% filled in. Please complete more fields so the builder has enough to work with.`);
-      return;
-    }
-
-    // Build summary
+  function buildSummary() {
     let summary = '=== WEBSITE PROJECT BRIEF ===\n\n';
+    const data = {};
     document.querySelectorAll('.section').forEach((sec, i) => {
       const title = sec.querySelector('.section-title')?.childNodes[0]?.textContent?.trim();
       summary += `— SECTION ${i+1}: ${title} —\n`;
-
       sec.querySelectorAll('.field').forEach(field => {
-        const label = field.querySelector('label')?.textContent?.replace('*','').trim();
+        const labelEl = field.querySelector('label');
+        if (!labelEl) return;
+        const label = labelEl.textContent.replace('*','').trim();
         const input = field.querySelector('input[type="text"], input[type="url"], input[type="date"], textarea, select');
-        const checked = [...field.querySelectorAll('input:checked')].map(c => c.closest('label')?.textContent?.trim()).filter(Boolean);
-
-        if (label) {
-          let val = '';
-          if (input?.value) val = input.value;
-          if (checked.length) val = checked.join(', ');
-          if (val) summary += `${label}: ${val}\n`;
-        }
+        const checked = [...field.querySelectorAll('input:checked')]
+          .map(c => c.closest('label')?.textContent?.trim()).filter(Boolean);
+        let val = '';
+        if (checked.length) val = checked.join(', ');
+        else if (input?.value?.trim()) val = input.value.trim();
+        if (val) { summary += `${label}: ${val}\n`; data[label] = val; }
       });
       summary += '\n';
     });
-
-    // Copy to clipboard
-    navigator.clipboard.writeText(summary).then(() => {
-      alert(`✅ Brief submitted! (${pct}% complete)\n\nA text summary has been copied to your clipboard — paste it into any AI build platform to get started.`);
-    }).catch(() => {
-      alert(`✅ Brief submitted! (${pct}% complete)\n\nYour answers are ready. Use Print > Save as PDF to share with your builder or AI platform.`);
-    });
+    return { summary, data };
   }
+
+  function showToast(msg, type = 'success') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.style.cssText = `
+      position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+      background:${type === 'success' ? '#1a6e3c' : '#c84b2f'};
+      color:white; padding:16px 28px; border-radius:10px;
+      font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500;
+      box-shadow:0 8px 32px rgba(0,0,0,0.25); z-index:9999;
+      animation:slideUp 0.3s ease; max-width:90vw; text-align:center;`;
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 6000);
+  }
+
+  async function handleSubmit() {
+    const fields = document.querySelectorAll('input[type="text"], input[type="url"], input[type="date"], textarea, select');
+    let filled = 0;
+    fields.forEach(f => { if (f.value.trim()) filled++; });
+    const pct = Math.round((filled / fields.length) * 100);
+
+    if (pct < 30) {
+      showToast(`⚠️ Only ${pct}% complete — please fill in more details first.`, 'error');
+      return;
+    }
+
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = '⏳ Sending...';
+    btn.disabled = true;
+
+    const { summary, data } = buildSummary();
+
+    // 1. Send via Formspree → emails ryankipchumba2007@gmail.com
+    let emailSent = false;
+    if (FORMSPREE_ID && FORMSPREE_ID !== 'YOUR_FORM_ID') {
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: `📋 New Website Brief — ${data['Business / Brand Name '] || data['Business / Brand Name'] || 'New Client'}`,
+            ...data,
+            '--- Full Summary ---': summary
+          })
+        });
+        if (res.ok) emailSent = true;
+      } catch (err) { console.error('Formspree error:', err); }
+    }
+
+    // 2. Also copy to clipboard as backup
+    try { await navigator.clipboard.writeText(summary); } catch (_) {}
+
+    btn.textContent = '✓ Submit Project Brief';
+    btn.disabled = false;
+
+    if (FORMSPREE_ID === 'YOUR_FORM_ID') {
+      showToast('📋 Copied to clipboard! Add your Formspree ID to enable email delivery.', 'success');
+    } else if (emailSent) {
+      showToast('✅ Brief sent to your email and copied to clipboard!', 'success');
+    } else {
+      showToast('📋 Copied to clipboard — email failed. Double-check your Formspree ID.', 'error');
+    }
+  }
+
+  const s = document.createElement('style');
+  s.textContent = `@keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(16px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`;
+  document.head.appendChild(s);
 </script>
 
 </body>
