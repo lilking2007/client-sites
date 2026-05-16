@@ -537,7 +537,6 @@
           <tr><td><input placeholder="e.g. About Page"></td><td><input placeholder="Description..."></td><td><input placeholder="✓ Yes"></td></tr>
           <tr><td><input placeholder="e.g. Contact Form"></td><td><input placeholder="Description..."></td><td><input placeholder="✓ Yes"></td></tr>
           <tr><td><input placeholder="e.g. Mobile Responsive"></td><td><input placeholder="All screen sizes"></td><td><input placeholder="✓ Yes"></td></tr>
-          <tr><td><input placeholder="Additional item..."></td><td><input placeholder="Description..."></td><td><input placeholder=""></td></tr>
         </tbody>
       </table>
     </div>
@@ -724,6 +723,66 @@
   const displayDate = today.toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
   document.getElementById('ryanSigDate').textContent = 'Signed: ' + displayDate;
   document.getElementById('clientSigDate').textContent = 'Date: ' + displayDate;
+
+  // ── SCOPE TABLE AUTO-EXPAND & RETRACT ──
+  const MIN_ROWS = 4;
+
+  function rowIsEmpty(row) {
+    return Array.from(row.querySelectorAll('input')).every(i => i.value.trim() === '');
+  }
+
+  function addScopeRow() {
+    const tbody = document.getElementById('scopeRows');
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td><input placeholder="Deliverable..."></td><td><input placeholder="Description..."></td><td><input placeholder="✓ Yes"></td>';
+    tbody.appendChild(tr);
+    attachScopeListeners(tr);
+  }
+
+  function trimTrailingEmptyRows() {
+    const tbody = document.getElementById('scopeRows');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    // Remove trailing empty rows until only one empty row remains at the end
+    let trailingEmpty = 0;
+    for (let i = rows.length - 1; i >= MIN_ROWS; i--) {
+      if (rowIsEmpty(rows[i])) trailingEmpty++;
+      else break;
+    }
+    // Keep exactly one trailing empty row
+    const toRemove = trailingEmpty - 1;
+    for (let i = 0; i < toRemove; i++) {
+      const allRows = tbody.querySelectorAll('tr');
+      const last = allRows[allRows.length - 1];
+      if (rowIsEmpty(last) && allRows.length > MIN_ROWS) {
+        tbody.removeChild(last);
+      }
+    }
+  }
+
+  function attachScopeListeners(row) {
+    row.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', () => {
+        const tbody = document.getElementById('scopeRows');
+        const rows = tbody.querySelectorAll('tr');
+        const lastRow = rows[rows.length - 1];
+        const isLastRow = row === lastRow;
+        const hasValue = !rowIsEmpty(row);
+
+        if (isLastRow && hasValue) {
+          // Typed into last row → add a new empty row below
+          addScopeRow();
+        } else if (!isLastRow) {
+          // Edited a non-last row → clean up any extra empty rows at the bottom
+          trimTrailingEmptyRows();
+        } else {
+          // Cleared the last row → trim so only one empty row remains
+          trimTrailingEmptyRows();
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll('#scopeRows tr').forEach(row => attachScopeListeners(row));
 
   // ── SIGNATURE PAD ──
   const canvas = document.getElementById('clientSigCanvas');
