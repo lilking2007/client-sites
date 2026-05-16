@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Project Brief — Client Intake Form</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0f0f;
+    --paper: #f9f6f0;
+    --rule: #d8d0c4;
+    --accent: #c84b2f;
+    --accent-light: #f5ede9;
+    --muted: #7a7267;
+    --field-bg: #ffffff;
+    --section-num: #e8e0d6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 52px 60px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 60px solid rgba(200,75,47,0.18);
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.1;
+    font-weight: 400;
+    max-width: 540px;
+  }
+  header h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .header-sub {
+    margin-top: 16px;
+    color: #a09890;
+    font-size: 14px;
+    font-weight: 300;
+    max-width: 500px;
+  }
+  .header-meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 160px;
+  }
+  .meta-field label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #706860;
+    font-weight: 600;
+  }
+  .meta-field input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #3a3530;
+    color: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 4px 0;
+    width: 200px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .meta-field input:focus { border-color: var(--accent); }
+  .meta-field input::placeholder { color: #504840; }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 60px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--section-num);
+    line-height: 1;
+    font-weight: 400;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .section-title span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* ── FIELDS ── */
+  .field-group {
+    display: grid;
+    gap: 20px;
+  }
+  .field-group.cols-2 { grid-template-columns: 1fr 1fr; }
+  .field-group.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: -2px;
+    font-weight: 300;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    background: var(--field-bg);
+    border: 1.5px solid var(--rule);
+    border-radius: 6px;
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .field textarea.tall { min-height: 130px; }
+  .field select { cursor: pointer; }
+
+  /* ── CHECKBOX GRID ── */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--field-bg);
+    border: 1.5px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+    font-size: 13px;
+  }
+  .check-item:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .check-item input[type="checkbox"] {
+    accent-color: var(--accent);
+    width: 15px; height: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  /* ── RADIO ROW ── */
+  .radio-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .radio-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--field-bg);
+    border: 1.5px solid var(--rule);
+    border-radius: 100px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .radio-pill:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    font-weight: 500;
+  }
+  .radio-pill input { accent-color: var(--accent); cursor: pointer; }
+
+  /* ── COLOR PICKER ROW ── */
+  .color-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .color-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .color-swatch label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .color-swatch input[type="color"] {
+    width: 52px; height: 52px;
+    border: 2px solid var(--rule);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 3px;
+    background: white;
+  }
+
+  /* ── SCALE ── */
+  .scale-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .scale-row .scale-label {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .scale-row .scale-label:last-child { text-align: right; }
+  .scale-row input[type="range"] {
+    flex: 1;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  /* ── UPLOAD AREA ── */
+  .upload-area {
+    border: 2px dashed var(--rule);
+    border-radius: 8px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
+  .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-text { font-size: 13px; color: var(--muted); }
+  .upload-text strong { color: var(--ink); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 32px 0;
+  }
+
+  /* ── SUBMIT ── */
+  .submit-zone {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    margin-top: 60px;
+  }
+  .submit-zone p {
+    color: #a09890;
+    font-size: 14px;
+    margin-bottom: 24px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-submit {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 16px 48px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,75,47,0.4);
+  }
+  .btn-print {
+    background: transparent;
+    color: #a09890;
+    border: 1px solid #3a3530;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px 24px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: color 0.2s, border-color 0.2s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-print:hover { color: white; border-color: white; }
+
+  /* ── REQUIRED BADGE ── */
+  .req { color: var(--accent); margin-left: 2px; }
+
+  /* ── PRINT ── */
+  @media print {
+    header { padding: 30px; }
+    main { padding: 30px; }
+    .submit-zone, .btn-print { display: none; }
+    .section { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 36px 24px 32px; }
+    main { padding: 40px 20px 60px; }
+    .field-group.cols-2,
+    .field-group.cols-3 { grid-template-columns: 1fr; }
+    .header-meta { gap: 20px; }
+    .meta-field input { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">New Project</div>
+  <h1>Website Project<br><em>Brief &amp; Intake Form</em></h1>
+  <p class="header-sub">Fill in as much detail as possible. The more you share, the closer the first build gets to your vision.</p>
+  <div class="header-meta">
+    <div class="meta-field">
+      <label>Client Name</label>
+      <input type="text" placeholder="Full name or company">
+    </div>
+    <div class="meta-field">
+      <label>Date Completed</label>
+      <input type="date">
+    </div>
+    <div class="meta-field">
+      <label>Submitted To</label>
+      <input type="text" placeholder="Builder / designer name">
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── 1. ABOUT THE BUSINESS ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">About the Business
+        <span>Who you are and what you do</span>
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field">
+        <label>Business / Brand Name <span class="req">*</span></label>
+        <input type="text" placeholder="e.g. Nova Studio, Ryan's Roofing, Dr. Kim Wellness">
+      </div>
+      <div class="field">
+        <label>Industry / Niche <span class="req">*</span></label>
+        <input type="text" placeholder="e.g. Health & Fitness, Real Estate, E-Commerce, SaaS, Consulting">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group">
+      <div class="field">
+        <label>What does your business do? <span class="req">*</span></label>
+        <p class="hint">Describe what you offer in plain English — products, services, mission</p>
+        <textarea class="tall" placeholder="We provide premium home renovation services across the Houston metro area, specialising in kitchen remodels and outdoor spaces..."></textarea>
+      </div>
+      <div class="field">
+        <label>Who is your target audience? <span class="req">*</span></label>
+        <p class="hint">Age range, lifestyle, pain points, where they hang out online</p>
+        <textarea class="tall" placeholder="Homeowners aged 35–60, dual-income households, value quality over price, browse Instagram and Houzz for inspiration..."></textarea>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Tagline / Slogan (if you have one)</label>
+        <input type="text" placeholder="e.g. 'Built to Last. Designed to Impress.'">
+      </div>
+      <div class="field">
+        <label>Current website URL (if any)</label>
+        <input type="url" placeholder="https://yoursite.com">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-3">
+      <div class="field">
+        <label>Competitor / Inspiration Site 1</label>
+        <input type="url" placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Competitor / Inspiration Site 2</label>
+        <input type="url" placeholder="https://...">
+      </div>
+      <div class="field">
+        <label>Competitor / Inspiration Site 3</label>
+        <input type="url" placeholder="https://...">
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>What do you like (or dislike) about those sites?</label>
+      <textarea placeholder="I love the clean layout of site 1, but hate how site 2 has too much text on the homepage. I want something more visual..."></textarea>
+    </div>
+  </section>
+
+  <!-- ── 2. WEBSITE PURPOSE ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">Website Purpose
+        <span>What the site needs to do</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Primary goal of the website <span class="req">*</span></label>
+      <div class="radio-row">
+        <label class="radio-pill"><input type="radio" name="goal" value="leads"> Generate Leads / Enquiries</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="ecommerce"> Sell Products (E-Commerce)</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="portfolio"> Showcase Portfolio / Work</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="brand"> Build Brand Awareness</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="info"> Provide Information / Blog</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="bookings"> Take Bookings / Appointments</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="community"> Build a Community / Membership</label>
+        <label class="radio-pill"><input type="radio" name="goal" value="other"> Other</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>What is the #1 action you want visitors to take?</label>
+      <p class="hint">The single most important conversion action on the site</p>
+      <input type="text" placeholder="e.g. Submit a contact form, Book a free call, Buy a product, Sign up to the newsletter">
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>What pages do you need? <span class="req">*</span></label>
+      <p class="hint">Check all that apply — add custom pages in the box below</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Home</label>
+        <label class="check-item"><input type="checkbox"> About / Our Story</label>
+        <label class="check-item"><input type="checkbox"> Services</label>
+        <label class="check-item"><input type="checkbox"> Products / Shop</label>
+        <label class="check-item"><input type="checkbox"> Portfolio / Gallery</label>
+        <label class="check-item"><input type="checkbox"> Blog / Articles</label>
+        <label class="check-item"><input type="checkbox"> Testimonials</label>
+        <label class="check-item"><input type="checkbox"> Pricing</label>
+        <label class="check-item"><input type="checkbox"> FAQ</label>
+        <label class="check-item"><input type="checkbox"> Team / Meet Us</label>
+        <label class="check-item"><input type="checkbox"> Contact</label>
+        <label class="check-item"><input type="checkbox"> Booking / Scheduler</label>
+        <label class="check-item"><input type="checkbox"> Login / Dashboard</label>
+        <label class="check-item"><input type="checkbox"> Privacy / Legal</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Any additional / custom pages?</label>
+      <input type="text" placeholder="e.g. Events page, Case Studies, Resource Library, Podcast, Careers...">
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Special features or functionality needed?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Contact Form</label>
+        <label class="check-item"><input type="checkbox"> Live Chat</label>
+        <label class="check-item"><input type="checkbox"> Email Capture / Opt-in</label>
+        <label class="check-item"><input type="checkbox"> Payment Processing</label>
+        <label class="check-item"><input type="checkbox"> Booking / Calendar</label>
+        <label class="check-item"><input type="checkbox"> Search Function</label>
+        <label class="check-item"><input type="checkbox"> Video Background / Embed</label>
+        <label class="check-item"><input type="checkbox"> Image / Project Gallery</label>
+        <label class="check-item"><input type="checkbox"> Social Media Feed</label>
+        <label class="check-item"><input type="checkbox"> Newsletter Integration</label>
+        <label class="check-item"><input type="checkbox"> Blog / CMS</label>
+        <label class="check-item"><input type="checkbox"> Password-Protected Area</label>
+        <label class="check-item"><input type="checkbox"> Multi-language</label>
+        <label class="check-item"><input type="checkbox"> Map / Location Embed</label>
+        <label class="check-item"><input type="checkbox"> Pop-up / Announcement Bar</label>
+        <label class="check-item"><input type="checkbox"> Reviews / Ratings</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Describe any other custom features in detail</label>
+      <textarea placeholder="e.g. I need a quiz that recommends a product based on user answers, or a client portal where they can log in and see their project status..."></textarea>
+    </div>
+  </section>
+
+  <!-- ── 3. VISUAL IDENTITY ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">Visual Identity &amp; Design
+        <span>How it should look and feel</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Overall vibe / aesthetic <span class="req">*</span></label>
+      <p class="hint">Select all that resonate with your brand</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Clean &amp; Minimal</label>
+        <label class="check-item"><input type="checkbox"> Bold &amp; Impactful</label>
+        <label class="check-item"><input type="checkbox"> Luxury &amp; Premium</label>
+        <label class="check-item"><input type="checkbox"> Fun &amp; Playful</label>
+        <label class="check-item"><input type="checkbox"> Professional &amp; Corporate</label>
+        <label class="check-item"><input type="checkbox"> Warm &amp; Friendly</label>
+        <label class="check-item"><input type="checkbox"> Dark &amp; Edgy</label>
+        <label class="check-item"><input type="checkbox"> Feminine &amp; Soft</label>
+        <label class="check-item"><input type="checkbox"> Masculine &amp; Strong</label>
+        <label class="check-item"><input type="checkbox"> Techy / Futuristic</label>
+        <label class="check-item"><input type="checkbox"> Organic / Natural</label>
+        <label class="check-item"><input type="checkbox"> Vintage / Retro</label>
+        <label class="check-item"><input type="checkbox"> Artsy / Creative</label>
+        <label class="check-item"><input type="checkbox"> Trustworthy &amp; Safe</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Theme Preference</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="theme" value="light"> Light (white / pale)</label>
+          <label class="radio-pill"><input type="radio" name="theme" value="dark"> Dark (black / deep tones)</label>
+          <label class="radio-pill"><input type="radio" name="theme" value="colourful"> Colourful / Vibrant</label>
+          <label class="radio-pill"><input type="radio" name="theme" value="neutral"> Neutral / Earthy</label>
+          <label class="radio-pill"><input type="radio" name="theme" value="unsure"> Not sure — builder decides</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Imagery Style</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="imagery" value="photos"> Real Photography</label>
+          <label class="radio-pill"><input type="radio" name="imagery" value="illustrations"> Illustrations / Icons</label>
+          <label class="radio-pill"><input type="radio" name="imagery" value="mix"> Mix of Both</label>
+          <label class="radio-pill"><input type="radio" name="imagery" value="minimal"> Mostly Text / Minimal</label>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Brand Colour Palette</label>
+      <p class="hint">Pick up to 4 colours — or leave default and describe in words below</p>
+      <div class="color-row">
+        <div class="color-swatch"><label>Primary</label><input type="color" value="#1a1a2e"></div>
+        <div class="color-swatch"><label>Secondary</label><input type="color" value="#c84b2f"></div>
+        <div class="color-swatch"><label>Accent</label><input type="color" value="#f5c842"></div>
+        <div class="color-swatch"><label>Background</label><input type="color" value="#f9f6f0"></div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Describe colours in words (or paste hex codes)</label>
+      <input type="text" placeholder="e.g. Deep navy, gold, and white — or #0d1b2a, #e9c46a, #ffffff">
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Font / Typography Preference</label>
+        <p class="hint">Any font names, or just describe the feel</p>
+        <input type="text" placeholder="e.g. Elegant serif headings with clean sans-serif body, or 'modern and bold'">
+      </div>
+      <div class="field">
+        <label>Animation / Motion Level</label>
+        <p class="hint">How much movement should the site have?</p>
+        <div class="scale-row">
+          <span class="scale-label">Static / None</span>
+          <input type="range" min="1" max="5" value="3">
+          <span class="scale-label">Heavy / Cinematic</span>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Do you have existing branding assets?</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Logo (file)</label>
+        <label class="check-item"><input type="checkbox"> Brand guidelines / style guide</label>
+        <label class="check-item"><input type="checkbox"> Photos / images ready to use</label>
+        <label class="check-item"><input type="checkbox"> Videos ready to use</label>
+        <label class="check-item"><input type="checkbox"> Icons / illustrations</label>
+        <label class="check-item"><input type="checkbox"> None — start from scratch</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Attach / paste links to any brand assets</label>
+      <input type="text" placeholder="Google Drive, Dropbox, WeTransfer link — or describe what you'll provide">
+    </div>
+  </section>
+
+  <!-- ── 4. CONTENT ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">Content &amp; Copy
+        <span>What goes on the site</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Who is writing the copy / text? <span class="req">*</span></label>
+      <div class="radio-row">
+        <label class="radio-pill"><input type="radio" name="copy" value="me"> I'll write it myself</label>
+        <label class="radio-pill"><input type="radio" name="copy" value="ai"> Use AI to generate it</label>
+        <label class="radio-pill"><input type="radio" name="copy" value="builder"> Builder writes it</label>
+        <label class="radio-pill"><input type="radio" name="copy" value="existing"> Already written — I'll provide it</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Tone of voice <span class="req">*</span></label>
+      <p class="hint">How should the writing feel?</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Conversational &amp; Friendly</label>
+        <label class="check-item"><input type="checkbox"> Professional &amp; Formal</label>
+        <label class="check-item"><input type="checkbox"> Authoritative / Expert</label>
+        <label class="check-item"><input type="checkbox"> Inspirational / Motivational</label>
+        <label class="check-item"><input type="checkbox"> Witty / Humorous</label>
+        <label class="check-item"><input type="checkbox"> Direct &amp; No-Nonsense</label>
+        <label class="check-item"><input type="checkbox"> Empathetic &amp; Nurturing</label>
+        <label class="check-item"><input type="checkbox"> Luxurious / Aspirational</label>
+        <label class="check-item"><input type="checkbox"> Educational / Informative</label>
+        <label class="check-item"><input type="checkbox"> Bold &amp; Disruptive</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Key messages / headlines you want on the site</label>
+      <p class="hint">Bullet point any key phrases, benefits, or statements that must appear</p>
+      <textarea class="tall" placeholder="• 10+ years experience&#10;• Free consultations&#10;• 'Transform your space in 30 days or less'&#10;• Trusted by 500+ clients"></textarea>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Services / Products to feature</label>
+      <p class="hint">List them out — name, brief description, price (optional)</p>
+      <textarea class="tall" placeholder="1. Kitchen Remodel — full renovation from $8,000&#10;2. Bathroom Refresh — cosmetic upgrades from $2,500&#10;3. Outdoor Living — decks, patios, pergolas from $5,000"></textarea>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Do you have testimonials / reviews?</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="reviews" value="yes"> Yes, I'll provide them</label>
+          <label class="radio-pill"><input type="radio" name="reviews" value="generate"> Generate placeholder ones</label>
+          <label class="radio-pill"><input type="radio" name="reviews" value="no"> Not needed right now</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Do you want a blog / news section?</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="blog" value="yes"> Yes</label>
+          <label class="radio-pill"><input type="radio" name="blog" value="later"> Maybe later</label>
+          <label class="radio-pill"><input type="radio" name="blog" value="no"> No</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. TECHNICAL ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">Technical Details
+        <span>How it gets built and hosted</span>
+      </div>
+    </div>
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Platform preference</label>
+        <select>
+          <option value="">— Select if you have a preference —</option>
+          <option>No preference — builder decides</option>
+          <option>Webflow</option>
+          <option>WordPress</option>
+          <option>Framer</option>
+          <option>Squarespace</option>
+          <option>Wix</option>
+          <option>Shopify (e-commerce)</option>
+          <option>Custom code (HTML/CSS/JS)</option>
+          <option>React / Next.js</option>
+          <option>Other (specify below)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Do you already have a domain name?</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="domain" value="yes"> Yes</label>
+          <label class="radio-pill"><input type="radio" name="domain" value="no"> No — need to buy one</label>
+          <label class="radio-pill"><input type="radio" name="domain" value="unsure"> Not sure</label>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Domain name (if you have one)</label>
+        <input type="text" placeholder="yourbrand.com">
+      </div>
+      <div class="field">
+        <label>Do you have existing hosting?</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="hosting" value="yes"> Yes</label>
+          <label class="radio-pill"><input type="radio" name="hosting" value="no"> No</label>
+          <label class="radio-pill"><input type="radio" name="hosting" value="unsure"> Unsure</label>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Third-party tools / integrations to connect</label>
+      <p class="hint">Any apps, software, or services the site needs to connect to</p>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox"> Mailchimp / Klaviyo</label>
+        <label class="check-item"><input type="checkbox"> HubSpot / CRM</label>
+        <label class="check-item"><input type="checkbox"> Stripe / PayPal</label>
+        <label class="check-item"><input type="checkbox"> Calendly / Acuity</label>
+        <label class="check-item"><input type="checkbox"> Google Analytics</label>
+        <label class="check-item"><input type="checkbox"> Facebook Pixel</label>
+        <label class="check-item"><input type="checkbox"> Instagram Feed</label>
+        <label class="check-item"><input type="checkbox"> WhatsApp Chat</label>
+        <label class="check-item"><input type="checkbox"> Zapier / Make</label>
+        <label class="check-item"><input type="checkbox"> Typeform / JotForm</label>
+        <label class="check-item"><input type="checkbox"> YouTube Embed</label>
+        <label class="check-item"><input type="checkbox"> Spotify / Podcast</label>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Anything else technical to flag?</label>
+      <textarea placeholder="e.g. The site must load in under 2 seconds, needs GDPR compliance pop-up, must work offline as a PWA..."></textarea>
+    </div>
+  </section>
+
+  <!-- ── 6. TIMELINE & BUDGET ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">Timeline &amp; Budget
+        <span>Scope and expectations</span>
+      </div>
+    </div>
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Desired launch date</label>
+        <input type="date">
+      </div>
+      <div class="field">
+        <label>How urgent is this? <span class="req">*</span></label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="urgency" value="asap"> ASAP</label>
+          <label class="radio-pill"><input type="radio" name="urgency" value="weeks"> Within a few weeks</label>
+          <label class="radio-pill"><input type="radio" name="urgency" value="month"> Within a month</label>
+          <label class="radio-pill"><input type="radio" name="urgency" value="flexible"> Flexible</label>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field-group cols-2">
+      <div class="field">
+        <label>Budget range</label>
+        <select>
+          <option value="">— Select a range —</option>
+          <option>Under $500</option>
+          <option>$500 – $1,000</option>
+          <option>$1,000 – $2,500</option>
+          <option>$2,500 – $5,000</option>
+          <option>$5,000 – $10,000</option>
+          <option>$10,000+</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Ongoing maintenance needed after launch?</label>
+        <div class="radio-row">
+          <label class="radio-pill"><input type="radio" name="maintenance" value="yes"> Yes, monthly retainer</label>
+          <label class="radio-pill"><input type="radio" name="maintenance" value="adhoc"> Ad-hoc updates only</label>
+          <label class="radio-pill"><input type="radio" name="maintenance" value="self"> I'll manage it myself</label>
+          <label class="radio-pill"><input type="radio" name="maintenance" value="no"> No</label>
+        </div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Who will update the site after it's built?</label>
+      <input type="text" placeholder="e.g. Me (non-technical), our marketing team, the same builder">
+    </div>
+  </section>
+
+  <!-- ── 7. ANYTHING ELSE ── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">Anything Else?
+        <span>Extra context, must-haves, and deal-breakers</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Absolute must-haves for this project</label>
+      <p class="hint">Things the site cannot launch without — non-negotiables</p>
+      <textarea placeholder="e.g. Must display a phone number in the header at all times, must have a WhatsApp button, homepage hero video is essential..."></textarea>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Things you absolutely do NOT want</label>
+      <p class="hint">Styles, features, or elements to avoid at all costs</p>
+      <textarea placeholder="e.g. No stock photo of people shaking hands, no purple colour, no excessive pop-ups, don't make it look like every other consulting site..."></textarea>
+    </div>
+    <hr class="divider">
+    <div class="field">
+      <label>Any other context, ideas, or notes for the builder?</label>
+      <textarea class="tall" placeholder="Anything that didn't fit elsewhere — reference projects, mood board links, specific wording, personal preferences, backstory of the brand..."></textarea>
+    </div>
+  </section>
+
+  <div class="submit-zone">
+    <p>Once submitted, your builder will review every detail and reach out within 24 hours to confirm scope and next steps.</p>
+    <button class="btn-submit" onclick="handleSubmit()">✓ Submit Project Brief</button>
+    <button class="btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  </div>
+
+</main>
+
+<script>
+  function handleSubmit() {
+    // Collect all answers for copy-paste
+    const fields = document.querySelectorAll('input[type="text"], input[type="url"], input[type="date"], textarea, select');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const radios = document.querySelectorAll('input[type="radio"]:checked');
+
+    let filled = 0;
+    fields.forEach(f => { if (f.value.trim()) filled++; });
+
+    const total = fields.length;
+    const pct = Math.round((filled / total) * 100);
+
+    if (pct < 30) {
+      alert(`⚠️ The form is only ${pct}% filled in. Please complete more fields so the builder has enough to work with.`);
+      return;
+    }
+
+    // Build summary
+    let summary = '=== WEBSITE PROJECT BRIEF ===\n\n';
+    document.querySelectorAll('.section').forEach((sec, i) => {
+      const title = sec.querySelector('.section-title')?.childNodes[0]?.textContent?.trim();
+      summary += `— SECTION ${i+1}: ${title} —\n`;
+
+      sec.querySelectorAll('.field').forEach(field => {
+        const label = field.querySelector('label')?.textContent?.replace('*','').trim();
+        const input = field.querySelector('input[type="text"], input[type="url"], input[type="date"], textarea, select');
+        const checked = [...field.querySelectorAll('input:checked')].map(c => c.closest('label')?.textContent?.trim()).filter(Boolean);
+
+        if (label) {
+          let val = '';
+          if (input?.value) val = input.value;
+          if (checked.length) val = checked.join(', ');
+          if (val) summary += `${label}: ${val}\n`;
+        }
+      });
+      summary += '\n';
+    });
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(summary).then(() => {
+      alert(`✅ Brief submitted! (${pct}% complete)\n\nA text summary has been copied to your clipboard — paste it into any AI build platform to get started.`);
+    }).catch(() => {
+      alert(`✅ Brief submitted! (${pct}% complete)\n\nYour answers are ready. Use Print > Save as PDF to share with your builder or AI platform.`);
+    });
+  }
+</script>
+
+</body>
+</html>
